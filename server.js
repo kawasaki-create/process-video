@@ -10,6 +10,17 @@ import { uploadToR2 } from './r2Upload.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// 一時ディレクトリ確保
+const createTmpDirs = () => {
+  ['tmp/uploads', 'tmp/processed', 'tmp/thumbnails'].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
+};
+
+createTmpDirs();
+
 const upload = multer({ 
   dest: 'tmp/uploads',
   limits: { fileSize: 200 * 1024 * 1024 }
