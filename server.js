@@ -74,7 +74,7 @@ app.post('/api/process-video', authenticateRequest, upload.single('video'), asyn
       execSync(`
         ffmpeg -i "${tempPath}" \\
           -i watermark.png \\
-          -filter_complex "[1]scale=200:-1,format=rgba,colorchannelmixer=aa=0.3[wm];[0:v]scale=-2:720[scaled];[scaled][wm]overlay=W-w-10:H-h-10" \\
+          -filter_complex "[1]scale=200:-1,format=rgba,colorchannelmixer=aa=0.3[wm];[0][wm]overlay=W-w-10:H-h-10" \\
           -vcodec libx264 \\
           -crf 28 \\
           -preset fast \\
@@ -87,7 +87,6 @@ app.post('/api/process-video', authenticateRequest, upload.single('video'), asyn
       console.warn('watermark.png not found, processing without watermark');
       execSync(`
         ffmpeg -i "${tempPath}" \\
-          -vf "scale=-2:720" \\
           -vcodec libx264 \\
           -crf 28 \\
           -preset fast \\
